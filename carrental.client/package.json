@@ -1,5 +1,5 @@
 {
-  "name": "carrental.c  ent",
+  "name": "carrental.client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
