@@ -1,5 +1,8 @@
 
 using CarRental.Server.Entities;
+using CarRental.Server.Mapping;
+using CarRental.Server.Seeders;
+using CarRental.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Server
@@ -13,6 +16,9 @@ namespace CarRental.Server
             // Add services to the container.
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CarRentalDbConnection")));
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IVehicleService, VehicleService>();
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,6 +29,21 @@ namespace CarRental.Server
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                try
+                {
+                    CarRentalSeeder.Initialize(services);
+                }
+                catch(Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "Wyst¹pi³ b³¹d podczas seedowania");
+                }
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
