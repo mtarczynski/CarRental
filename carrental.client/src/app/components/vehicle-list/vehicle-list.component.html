@@ -1,0 +1,58 @@
+<h2>Dostępne pojazdy</h2>
+
+<div style="display: flex; align-items: center; gap: 16px; justify-content: center; margin-bottom: 16px;">
+  <mat-form-field appearance="fill">
+    <mat-label>Data rozpoczęcia</mat-label>
+    <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startTime">
+    <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+    <mat-datepicker #pickerStart></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Data zakończenia</mat-label>
+    <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endTime">
+    <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+    <mat-datepicker #pickerEnd></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="searchVehicles()">Szukaj</button>
+</div>
+
+<mat-card class="vehicles-card">
+  <mat-card-title>Lista dostępnych pojazdów</mat-card-title>
+  <mat-card-content>
+    <table mat-table [dataSource]="vehicles" class="mat-elevation-z8 full-width">
+
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef> Marka </th>
+        <td mat-cell *matCellDef="let vehicle"> {{ vehicle.brand }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef> Model </th>
+        <td mat-cell *matCellDef="let vehicle"> {{ vehicle.model }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef> Rok </th>
+        <td mat-cell *matCellDef="let vehicle"> {{ vehicle.year }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vehicleTypeName">
+        <th mat-header-cell *matHeaderCellDef> Typ </th>
+        <td mat-cell *matCellDef="let vehicle"> {{ vehicle.vehicleTypeName }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let vehicle">
+          <button mat-raised-button color="accent" (click)="onReserve(vehicle)">Rezerwuj</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  </mat-card-content>
+</mat-card>

@@ -9,5 +9,7 @@ namespace CarRental.Server.Services
         Task<Reservation> CreateReservationAsync(Reservation reservation);
 
         Task<Reservation> ReturnVehicleAsync(int reservationId);
+
+        Task<List<Reservation>> GetReservationsByCustomerAsync(int customerId);
     }
 }

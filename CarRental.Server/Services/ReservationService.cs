@@ -27,6 +27,16 @@ namespace CarRental.Server.Services
 
         }
 
+        public async Task<List<Reservation>> GetReservationsByCustomerAsync(int customerId)
+        {
+            return await _context.Reservations
+                .Include(r => r.Vehicle)
+                .ThenInclude(v => v.VehicleType)
+                .Where(r => r.CustomerId == customerId)
+                .OrderByDescending(r => r.StartTime)
+                .ToListAsync();
+        }
+
         public async Task<bool> IsVehicleAvailableAsync(int vehicleId, DateTime starTime, DateTime endTime)
         {
             bool isBooked = await _context.Reservations.AnyAsync(r =>

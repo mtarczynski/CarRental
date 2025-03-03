@@ -10,6 +10,8 @@ namespace CarRental.Server.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
 
+        public string PasswordHash { get; set; }
+
         public virtual List<Reservation> Reservations { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 interface WeatherForecast {
   date: string;
@@ -17,8 +19,11 @@ interface WeatherForecast {
 export class AppComponent implements OnInit {
   public forecasts: WeatherForecast[] = [];
 
-  constructor(private http: HttpClient) {}
-
+  constructor(
+    private http: HttpClient,
+    public authService: AuthService,
+    private router: Router
+  ) { }
   ngOnInit() {
     this.getForecasts();
   }
@@ -32,6 +37,10 @@ export class AppComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+  onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   title = 'carrental.client';

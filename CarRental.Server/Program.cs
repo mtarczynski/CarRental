@@ -3,7 +3,12 @@ using CarRental.Server.Entities;
 using CarRental.Server.Mapping;
 using CarRental.Server.Seeders;
 using CarRental.Server.Services;
+using CarRental.Server.Services.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Rotativa.AspNetCore;
+using System.Text;
 
 namespace CarRental.Server
 {
@@ -13,11 +18,45 @@ namespace CarRental.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            string secretKey = jwtSettings.GetValue<string>("SecretKey");
+            string issuer = jwtSettings.GetValue<string>("Issuer");
+            string audience = jwtSettings.GetValue<string>("Audience");
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                };
+            });
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AllowLocalhost54490",
+                    policy =>
+                    {
+                        policy.WithOrigins("https://localhost:54490")
+                              .AllowAnyMethod()
+                              .AllowAnyHeader();
+                    });
+            });
             builder.Services.AddDbContext<CarRentalDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CarRentalDbConnection")));
             builder.Services.AddScoped<IReservationService, ReservationService>();
             builder.Services.AddScoped<IVehicleService, VehicleService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddControllers();
@@ -26,6 +65,8 @@ namespace CarRental.Server
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+            app.UseCors("AllowLocalhost54490");
+            RotativaConfiguration.Setup(app.Environment.WebRootPath, "Rotativa");
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -53,7 +94,7 @@ namespace CarRental.Server
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

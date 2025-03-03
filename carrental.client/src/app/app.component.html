@@ -1,24 +1,17 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
+<mat-toolbar color="primary">
+  <span>CarRental App</span>
+  <span class="spacer"></span>
+  <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login">Logowanie</button>
+  <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/register">Rejestracja</button>
+  <button mat-button routerLink="/vehicles">Pojazdy</button>
+  <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/my-reservations">Moje rezerwacje</button>
+  <a mat-raised-button color="accent" href="https://localhost:44380/api/reports/fleet/excel" download="FleetReport.xlsx">
+    Raport XLS
+  </a>
+  <a mat-raised-button color="accent" href="https://localhost:44380/api/reports/fleet/pdf">
+    Raport pdf
+  </a>
+  <button mat-button *ngIf="authService.isLoggedIn()" (click)="onLogout()">Wyloguj</button>
+</mat-toolbar>
 
-<p>This component demonstrates fetching data from the server.</p>
-
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
-</table>
+<router-outlet></router-outlet>
