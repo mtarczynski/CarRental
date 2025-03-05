@@ -3,8 +3,8 @@ export interface ReservationDto {
   vehicleId: number;
   vehicleRegistrationNumber: string;
   customerId: number;
-  startTime: number;
-  endTime: number;
+  startTime: string;
+  endTime: string;
   status: string;
   createdAt: string;
 }

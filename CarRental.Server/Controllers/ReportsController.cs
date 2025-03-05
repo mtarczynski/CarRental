@@ -37,18 +37,16 @@ namespace CarRental.Server.Controllers
                 var worksheet = workbook.Worksheets.Add("Raport floty");
 
                 worksheet.Cell(1, 1).Value = "Wszystkich samochodów";
-                worksheet.Cell(1, 2).Value = "Dostępnych samochodów";
-                worksheet.Cell(1, 3).Value = "Zarezerwowanych samochodów";
-                worksheet.Cell(1, 4).Value = "Klientów łącznie";
+                worksheet.Cell(1, 2).Value = "Zarezerwowanych samochodów";
+                worksheet.Cell(1, 3).Value = "Klientów łącznie";
 
                 worksheet.Cell(2, 1).Value = totalVehicles;
-                worksheet.Cell(2, 2).Value = availableVehicles;
-                worksheet.Cell(2, 3).Value = reservedVehicles;
-                worksheet.Cell(2, 4).Value = totalCustomers;
+                worksheet.Cell(2, 2).Value = reservedVehicles;
+                worksheet.Cell(2, 3).Value = totalCustomers;
 
 
-                worksheet.Range("A1:D1").Style.Font.Bold = true;
-                var tableRange = worksheet.Range("A1:D2");
+                worksheet.Range("A1:C1").Style.Font.Bold = true;
+                var tableRange = worksheet.Range("A1:C2");
                 tableRange.Style.Border.OutsideBorder = XLBorderStyleValues.Medium;
                 tableRange.Style.Border.InsideBorder = XLBorderStyleValues.Medium;
                 worksheet.Columns().AdjustToContents();
@@ -110,9 +108,6 @@ namespace CarRental.Server.Controllers
 
                                 table.Cell().Element(CellStyle).Text("Wszystkich samochodów:");
                                 table.Cell().Element(CellStyle).Text(totalVehicles.ToString());
-
-                                table.Cell().Element(CellStyle).Text("Dostępnych samochodów:");
-                                table.Cell().Element(CellStyle).Text(availableVehicles.ToString());
 
                                 table.Cell().Element(CellStyle).Text("Zarezerwowanych samochodów:");
                                 table.Cell().Element(CellStyle).Text(reservedVehicles.ToString());

@@ -11,6 +11,7 @@ namespace CarRental.Server.Mapping
             CreateMap<CreateReservationDto, Reservation>();
 
             CreateMap<Reservation, ReservationDto>()
+                .ForMember(dest => dest.ReservationId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.VehicleRegistrationNumber, opt => opt.MapFrom(src => src.Vehicle.RegistrationNumber));
 
             CreateMap<Vehicle, VehicleDto>()

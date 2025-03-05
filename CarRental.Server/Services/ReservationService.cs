@@ -57,11 +57,11 @@ namespace CarRental.Server.Services
 
             if(reservation == null)
             {
-                throw new Exception(@"Rezerwacja o ID {reservationId} nie istnieje");
+                throw new Exception($"Rezerwacja o ID {reservationId} nie istnieje");
             }
             if(reservation.Status != "Active")
             {
-                throw new Exception(@"Rezerwacja o ID {reservationId} nie jest aktywna");
+                throw new Exception($"Rezerwacja o ID {reservationId} nie jest aktywna");
             }
 
             reservation.Status = "Returned";
