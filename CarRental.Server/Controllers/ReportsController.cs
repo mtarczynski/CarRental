@@ -49,6 +49,7 @@ namespace CarRental.Server.Controllers
                 var tableRange = worksheet.Range("A1:C2");
                 tableRange.Style.Border.OutsideBorder = XLBorderStyleValues.Medium;
                 tableRange.Style.Border.InsideBorder = XLBorderStyleValues.Medium;
+                tableRange.Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
                 worksheet.Columns().AdjustToContents();
 
                 using (var stream = new MemoryStream())
@@ -108,6 +109,9 @@ namespace CarRental.Server.Controllers
 
                                 table.Cell().Element(CellStyle).Text("Wszystkich samochodów:");
                                 table.Cell().Element(CellStyle).Text(totalVehicles.ToString());
+
+                                table.Cell().Element(CellStyle).Text("Dostępnych samochodów:");
+                                table.Cell().Element(CellStyle).Text(availableVehicles.ToString());
 
                                 table.Cell().Element(CellStyle).Text("Zarezerwowanych samochodów:");
                                 table.Cell().Element(CellStyle).Text(reservedVehicles.ToString());

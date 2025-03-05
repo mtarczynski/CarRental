@@ -5,12 +5,14 @@
   <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/register">Rejestracja</button>
   <button mat-button routerLink="/vehicles">Pojazdy</button>
   <button mat-button *ngIf="authService.isLoggedIn()" routerLink="/my-reservations">Moje rezerwacje</button>
-  <a mat-raised-button color="accent" href="https://localhost:44380/api/reports/fleet/excel" download="FleetReport.xlsx">
-    Raport XLS
-  </a>
-  <a mat-raised-button color="accent" href="https://localhost:44380/api/reports/fleet/pdf">
-    Raport pdf
-  </a>
+  <div class="report-buttons">
+    <a mat-raised-button color="basic" href="https://localhost:44380/api/reports/fleet/excel" download="FleetReport.xlsx">
+      Raport .XLS
+    </a>
+    <a mat-raised-button color="basic" href="https://localhost:44380/api/reports/fleet/pdf">
+      Raport .PDF
+    </a>
+  </div>
   <button mat-button *ngIf="authService.isLoggedIn()" (click)="onLogout()">Wyloguj</button>
 </mat-toolbar>
 

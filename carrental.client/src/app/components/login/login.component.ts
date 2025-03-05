@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoginRequestDto } from '../../models/login-request-dto';
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -32,6 +33,7 @@ export class LoginComponent {
         this.successMessage = 'Zalogowano pomyślnie';
         this.errorMessage = '';
         this.loginForm.reset();
+        this.router.navigate(['/vehicles']);
       },
       error: (err) => {
         this.errorMessage = err.error || err.message;
